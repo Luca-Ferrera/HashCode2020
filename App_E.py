@@ -75,13 +75,22 @@ if __name__ == '__main__':
 
     current_day = -1
 
+    used_library = []
+
     result = []
 
-    for (id, signup_days, n_book_per_days, list_of_book, _) in data.sorted_libraries:
+    while True:
+        i = 0
+        (id, signup_days, n_book_per_days, list_of_book, _) = data.sorted_libraries[i]
+        while id in used_library:
+            i += 1
+            (id, signup_days, n_book_per_days, list_of_book, _) = data.sorted_libraries[i]
+        used_library.append(id)
         current_day += signup_days
         remaining_days = data.n_days - current_day
         if remaining_days < 0:
             remaining_days = 0
+            break
         if current_day <= data.n_days:
             n_book_to_be_shipped = min(n_book_per_days * remaining_days, len(list_of_book))
             shipped_book = list_of_book[0:n_book_to_be_shipped]

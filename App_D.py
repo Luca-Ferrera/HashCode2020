@@ -62,9 +62,13 @@ if __name__ == '__main__':
 
     result = []
 
-    for (id, signup_days, n_book_per_days, list_of_book) in data.sorted_libraries:
+    while True:
+        (id, signup_days, n_book_per_days, list_of_book) = data.sorted_libraries[0]
         current_day += signup_days
         remaining_days = data.n_days - current_day
+        if remaining_days < 0:
+            remaining_days = 0
+            break
         if current_day <= data.n_days:
             n_book_to_be_shipped = min(n_book_per_days * remaining_days, len(list_of_book))
             shipped_book = list_of_book[0:n_book_to_be_shipped]
@@ -74,10 +78,12 @@ if __name__ == '__main__':
                     n_book_to_be_shipped,
                     shipped_book
                 ))
-            for book in shipped_book:
-                libraries = data.library_with_book_id[book]
-                for id_lib in libraries:
-                    data.libraries[id_lib][3].remove(book)
+            # else:
+                # raise Exception("fuck me")
+                for book in shipped_book:
+                    libraries = data.library_with_book_id[book]
+                    for id_lib in libraries:
+                        data.libraries[id_lib][3].remove(book)
             data.sorted_libraries = sorted(data.libraries, key=lambda x: len(x[3]))[::-1]
 
     # f = open("/mnt/886c2f0d-8fd6-4d89-867f-29c7952c1d9d/project/HashCode2020/d_result.txt", "w+")
