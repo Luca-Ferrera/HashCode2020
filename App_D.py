@@ -50,12 +50,13 @@ class Data:
 
 
 if __name__ == '__main__':
-    data = Data("/mnt/886c2f0d-8fd6-4d89-867f-29c7952c1d9d/project/HashCode2020/b_read_on.txt")
+    # data = Data("/mnt/886c2f0d-8fd6-4d89-867f-29c7952c1d9d/project/HashCode2020/d_tough_choices.txt")
+    data = Data("d_tough_choices.txt")
     # [0] n_books
     # [1] n_signup_days
     # [2] n_books_per_days
     # [3] list_of_books_in_the_library
-    data.sorted_libraries = sorted(data.libraries, key=lambda x: x[1])
+    data.sorted_libraries = sorted(data.libraries, key=lambda x: len(x[3]))[::-1]
 
     current_day = -1
 
@@ -73,19 +74,14 @@ if __name__ == '__main__':
                     n_book_to_be_shipped,
                     shipped_book
                 ))
+            for book in shipped_book:
+                libraries = data.library_with_book_id[book]
+                for id_lib in libraries:
+                    data.libraries[id_lib][3].remove(book)
+            data.sorted_libraries = sorted(data.libraries, key=lambda x: len(x[3]))[::-1]
 
-    # f = open("/mnt/886c2f0d-8fd6-4d89-867f-29c7952c1d9d/project/HashCode2020/b_result.txt", "w+")
-    # f.write(f"{len(result)}\n")
-    # for (id, n, books) in result:
-    #     f.write(f"{id} {n}\n")
-    #     for b in books:
-    #         f.write(f"{b} ")
-    #     f.write("\n")
-    #     print(id)
-    #     print(books)
-
-
-    f = open("/mnt/886c2f0d-8fd6-4d89-867f-29c7952c1d9d/project/HashCode2020/b_result.txt", "w+")
+    # f = open("/mnt/886c2f0d-8fd6-4d89-867f-29c7952c1d9d/project/HashCode2020/d_result.txt", "w+")
+    f = open("d_result.txt", "w+")
     print(f"{len(result)}\n", end="")
     for (id, n, books) in result:
         print(f"{id} {n}\n", end="")
